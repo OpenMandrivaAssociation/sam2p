@@ -30,6 +30,7 @@ BuildRequires:	libjpeg-progs
 Requires:	netpbm
 BuildRequires:	libtiff-devel
 BuildRequires:	libpng-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 sam2p is a UNIX command line utility written in ANSI C++ that converts
