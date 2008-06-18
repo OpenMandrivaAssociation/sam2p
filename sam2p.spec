@@ -16,7 +16,7 @@
 Summary:	Convert raster images to PostScript or PDF
 Name:		sam2p
 Version:	0.44.14
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Source0:	http://www.inf.bme.hu/~pts/sam2p-latest.tar.bz2
 Source1:	http://www.inf.bme.hu/~pts/tif22pnm-latest.tar.bz2
