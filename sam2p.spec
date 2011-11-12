@@ -14,23 +14,23 @@
 %define		tif22pnmver	0.12
 
 Summary:	Convert raster images to PostScript or PDF
+Group:		Graphics
 Name:		sam2p
 Version:	0.44.14
 Release:	%mkrel 6
 License:	GPL
+URL:		http://www.inf.bme.hu/~pts/sam2p
 Source0:	http://www.inf.bme.hu/~pts/sam2p-latest.tar.bz2
 Source1:	http://www.inf.bme.hu/~pts/tif22pnm-latest.tar.bz2
 # (gb) 64-bit fixes
 Patch0:		sam2p-0.44-64bit-fixes.patch
-URL:		http://www.inf.bme.hu/~pts/sam2p
-Group:		Graphics
+
 Requires:	ghostscript
 Requires:	jpeg-progs
 BuildRequires:	libjpeg-progs
 Requires:	netpbm
 BuildRequires:	libtiff-devel
 BuildRequires:	libpng-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 sam2p is a UNIX command line utility written in ANSI C++ that converts
@@ -72,15 +72,12 @@ popd
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-install -m 755 sam2p tif22pnm png22pnm $RPM_BUILD_ROOT%{_bindir}
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_bindir}
+install -m 755 sam2p tif22pnm png22pnm %{buildroot}%{_bindir}
 
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %doc COPYING
 %doc README README.tif22pnm examples contrib
 %{_bindir}/*
