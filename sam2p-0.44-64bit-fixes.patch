@@ -1,0 +1,78 @@
+--- sam2p-0.44/tif22pnm-0.12/ptstiff3.c.64bit-fixes	2003-02-05 15:21:27.000000000 -0500
++++ sam2p-0.44/tif22pnm-0.12/ptstiff3.c	2005-02-21 05:58:56.451608186 -0500
+@@ -785,14 +785,14 @@ load_rgba (TIFF *tif, channel_data *chan
+ {
+   uint32 imageWidth, imageLength;
+   uint32 row;
+-  gulong *buffer;
++  uint32 *buffer;
+ 
+   TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &imageWidth);
+   TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &imageLength);
+ 
+   gimp_pixel_rgn_init (&(channel[0].pixel_rgn), channel[0].drawable,
+                           0, 0, imageWidth, imageLength, TRUE, FALSE);
+-  buffer = g_new(gulong, imageWidth * imageLength);
++  buffer = g_new(uint32, imageWidth * imageLength);
+   channel[0].pixels = (guchar*) buffer;
+   if (buffer == NULL) {
+     g_message("TIFF Unable to allocate temporary buffer\n");
+--- sam2p-0.42/helpere.hpp.64bit-fixes	2003-12-09 05:03:58.000000000 -0500
++++ sam2p-0.42/helpere.hpp	2005-02-21 06:08:37.332784412 -0500
+@@ -19,7 +19,7 @@
+ /** Ugly multiple inheritance. !! unify with PNG, TIFF etc. */
+ class HelperE: public Filter::NullE, public Filter::PipeE {
+  public:
+-  inline HelperE(char const*filter_cmd, char const*mainfn=NULL): Filter::NullE(), Filter::PipeE(*(Filter::NullE*)this, filter_cmd, (slendiff_t)mainfn) {
++  inline HelperE(char const*filter_cmd, char const*mainfn=NULL): Filter::NullE(), Filter::PipeE(*(Filter::NullE*)this, filter_cmd, (uintptr_t)mainfn) {
+     /* ^^^ (slendiff_t) is unsafe cast */
+     // GenBuffer::Writable &out_, char *pipe_tmpl, slendiff_t i=0)
+   }
+--- sam2p-0.44/gensio.hpp.64bit-fixes	2003-09-30 07:09:33.000000000 -0400
++++ sam2p-0.44/gensio.hpp	2005-02-21 06:09:11.949767402 -0500
+@@ -13,6 +13,7 @@
+ #include <stdarg.h> /* va_list */
+ #include "gensi.hpp"
+ #include <stdio.h>
++#include <stdint.h>
+ 
+ /* Naming conventions: *Encode is a specific, well-known PostScript or PDF
+  * encoding filter documented by Adobe, *Encoder is something more general.
+@@ -67,7 +68,7 @@ class Filter { public:
+    */
+   class PipeE: public Encoder {
+    public:
+-    PipeE(GenBuffer::Writable &out_, char const*pipe_tmpl, slendiff_t i=0);
++    PipeE(GenBuffer::Writable &out_, char const*pipe_tmpl, uintptr_t i=0);
+     virtual ~PipeE();
+     virtual void vi_write(char const*buf, slen_t len);
+    protected:
+@@ -135,7 +136,7 @@ class Filter { public:
+   };
+ 
+   class PipeD: public Decoder { public:
+-    PipeD(GenBuffer::Readable &in_, char const*pipe_tmpl, slendiff_t i=0);
++    PipeD(GenBuffer::Readable &in_, char const*pipe_tmpl, uintptr_t i=0);
+     virtual ~PipeD();
+     /** Equivalent to vi_read(&ret,1). */
+     virtual int vi_getcc();
+--- sam2p-0.42/gensio.cpp.64bit-fixes	2005-01-06 04:59:39.000000000 -0500
++++ sam2p-0.42/gensio.cpp	2005-02-21 06:09:35.195456558 -0500
+@@ -422,7 +422,7 @@ void Filter::UngetFILED::appendLine(GenB
+ 
+ /* --- */
+ 
+-Filter::PipeE::PipeE(GenBuffer::Writable &out_, char const*pipe_tmpl, slendiff_t i): tmpname(), out(out_), tmpename() {
++Filter::PipeE::PipeE(GenBuffer::Writable &out_, char const*pipe_tmpl, uintptr_t i): tmpname(), out(out_), tmpename() {
+   /* <code similarity: Filter::PipeE::PipeE and Filter::PipeD::PipeD> */
+   param_assert(pipe_tmpl!=(char const*)NULLP);
+   SimBuffer::B *pp;
+@@ -546,7 +546,7 @@ void Filter::PipeE::vi_check() {}
+ 
+ /* --- */
+ 
+-Filter::PipeD::PipeD(GenBuffer::Readable &in_, char const*pipe_tmpl, slendiff_t i): state(0), in(in_) {
++Filter::PipeD::PipeD(GenBuffer::Readable &in_, char const*pipe_tmpl, uintptr_t i): state(0), in(in_) {
+   /* <code similarity: Filter::PipeE::PipeE and Filter::PipeD::PipeD> */
+   param_assert(pipe_tmpl!=(char const*)NULLP);
+   SimBuffer::B *pp=(SimBuffer::B*)NULLP;
