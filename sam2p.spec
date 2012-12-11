@@ -10,27 +10,24 @@
 %define enablelzw       1
 %endif
 
-%define		sam2pver	0.44
-%define		tif22pnmver	0.12
+%define		sam2pver	0.49.1
+%define		tif22pnmver	0.14
 
 Summary:	Convert raster images to PostScript or PDF
-Group:		Graphics
 Name:		sam2p
 Version:	0.44.14
-Release:	%mkrel 6
+Release:	1
 License:	GPL
-URL:		http://www.inf.bme.hu/~pts/sam2p
-Source0:	http://www.inf.bme.hu/~pts/sam2p-latest.tar.bz2
-Source1:	http://www.inf.bme.hu/~pts/tif22pnm-latest.tar.bz2
-# (gb) 64-bit fixes
-Patch0:		sam2p-0.44-64bit-fixes.patch
-
-Requires:	ghostscript
-Requires:	jpeg-progs
+Source0:	http://code.google.com/p/sam2p/downloads/list/sam2p-0.49.1.tar.gz
+Source1:	http://code.google.com/p/sam2p/downloads/list/tif22pnm-0.14.tar.gz
+URL:		http://code.google.com/p/sam2p/downloads/list
+Group:		Graphics
 BuildRequires:	libjpeg-progs
-Requires:	netpbm
 BuildRequires:	libtiff-devel
 BuildRequires:	libpng-devel
+Requires:	netpbm
+Requires:	ghostscript
+Requires:	jpeg-progs
 
 %description
 sam2p is a UNIX command line utility written in ANSI C++ that converts
@@ -44,7 +41,7 @@ even on Level1 devices.
 
 %prep
 %setup -q -n %{name}-%{sam2pver} -a 1
-%patch0 -p1 -b .64bit-fixes
+
 
 %build
 # don't use icecream
@@ -58,7 +55,11 @@ pushd tif22pnm-%{tif22pnmver}
 	--with-libpng-idir=%{_includedir} \
 	--with-libtiff-ldir=%{_libdir} \
 	--with-libpng-ldir=%{_libdir}
+
+sed -i -e 's/lpng /lpng -lm/' cc_help.sh
+
 make
+
 cp tif22pnm png22pnm ../
 cp -p README ../README.tif22pnm
 popd
@@ -72,14 +73,12 @@ popd
 make
 
 %install
-rm -rf %{buildroot}
-mkdir -p %{buildroot}%{_bindir}
-install -m 755 sam2p tif22pnm png22pnm %{buildroot}%{_bindir}
-
+mkdir -p $RPM_BUILD_ROOT%{_bindir}
+install -m 755 sam2p tif22pnm png22pnm $RPM_BUILD_ROOT%{_bindir}
 
 %files
+%defattr(-,root,root)
 %doc COPYING
 %doc README README.tif22pnm examples contrib
 %{_bindir}/*
-
 
