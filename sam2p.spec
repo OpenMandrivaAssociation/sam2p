@@ -1,6 +1,8 @@
 %define build_plf 0
 %{?_with_plf: %global build_plf 1}
 
+%define debug_package %{nil}
+
 # enablelzw = 0 (don't build with LZW compression support)
 # enablelzw = 1 (build with LZW compression support)
 # Currently we use enablelzw = 0 due to Unisys LZW patents.
@@ -16,7 +18,7 @@
 Summary:	Convert raster images to PostScript or PDF
 Name:		sam2p
 Version:	0.44.14
-Release:	1
+Release:	2
 License:	GPL
 Source0:	http://code.google.com/p/sam2p/downloads/list/sam2p-0.49.1.tar.gz
 Source1:	http://code.google.com/p/sam2p/downloads/list/tif22pnm-0.14.tar.gz
