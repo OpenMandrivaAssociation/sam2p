@@ -12,15 +12,16 @@
 %define enablelzw       1
 %endif
 
-%define		sam2pver	0.49.1
+%define		sam2pver	0.49.2
 %define		tif22pnmver	0.14
 
 Summary:	Convert raster images to PostScript or PDF
+
 Name:		sam2p
-Version:	0.44.14
-Release:	2
+Version:	0.49.2
+Release:	1
 License:	GPL
-Source0:	http://code.google.com/p/sam2p/downloads/list/sam2p-0.49.1.tar.gz
+Source0:	http://code.google.com/p/sam2p/downloads/list/sam2p-0.49.2.tar.gz
 Source1:	http://code.google.com/p/sam2p/downloads/list/tif22pnm-0.14.tar.gz
 URL:		http://code.google.com/p/sam2p/downloads/list
 Group:		Graphics
@@ -75,11 +76,10 @@ popd
 make
 
 %install
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-install -m 755 sam2p tif22pnm png22pnm $RPM_BUILD_ROOT%{_bindir}
+mkdir -p %{buildroot}%{_bindir}
+install -m 755 sam2p tif22pnm png22pnm %{buildroot}%{_bindir}
 
 %files
-%defattr(-,root,root)
 %doc COPYING
 %doc README README.tif22pnm examples contrib
 %{_bindir}/*
