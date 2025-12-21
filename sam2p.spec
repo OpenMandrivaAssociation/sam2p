@@ -25,6 +25,11 @@ Source0:	http://code.google.com/p/sam2p/downloads/list/sam2p-0.49.2.tar.gz
 Source1:	http://code.google.com/p/sam2p/downloads/list/tif22pnm-0.14.tar.gz
 URL:		https://code.google.com/p/sam2p/downloads/list
 Group:		Graphics
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	libjpeg-progs
 BuildRequires:	libtiff-devel
 BuildRequires:	libpng-devel
